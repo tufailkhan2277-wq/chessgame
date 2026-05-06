@@ -80,6 +80,53 @@ int absVal(int x) {
 
 	return x;
 }
+Pawn::Pawn(Color c) : Piece(c) {}
+
+char Pawn::symbol() {
+	if (color == WHITE) {
+		return 'P';
+	}
+
+	return 'p';
+}
+
+bool Pawn::canMove(Position f, Position t, Board &b) {
+	int d;
+
+	if (color == WHITE) {
+		d = -1;
+	}
+	else {
+		d = 1;
+	}
+
+	if (f.c == t.c && b.get(t) == nullptr && t.r == f.r + d) {
+		return true;
+	}
+
+	if (f.c == t.c && b.get(t) == nullptr) {
+		if (color == WHITE) {
+			if (f.r == 6 && t.r == 4 && b.get(Position(5, f.c)) == nullptr) {
+				return true;
+			}
+		}
+		else {
+			if (f.r == 1 && t.r == 3 && b.get(Position(2, f.c)) == nullptr) {
+				return true;
+			}
+		}
+	}
+
+	if (absVal(f.c - t.c) == 1 && t.r == f.r + d) {
+		Piece *p = b.get(t);
+
+		if (p != nullptr && p->getColor() != color) {
+			return true;
+		}
+	}
+
+	return false;
+}
 
 Position parse(string s) {
 	int r = 8 - (s[1] - '0');
@@ -98,5 +145,8 @@ string toNotation(Position p) {
 }
 
 void setupBoard(Board &board) {
-	// pieces will be added in next commits
+	for (int i = 0; i < 8; i++) {
+		board.set(Position(6, i), new Pawn(WHITE));
+		board.set(Position(1, i), new Pawn(BLACK));
+	}
 }
