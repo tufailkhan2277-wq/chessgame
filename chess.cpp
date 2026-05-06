@@ -201,6 +201,49 @@ bool Knight::canMove(Position f, Position t, Board &b) {
 
 	return false;
 }
+Bishop::Bishop(Color c) : Piece(c) {}
+
+char Bishop::symbol() {
+	if (color == WHITE) {
+		return 'B';
+	}
+
+	return 'b';
+}
+
+bool Bishop::canMove(Position f, Position t, Board &b) {
+	if (absVal(f.r - t.r) != absVal(f.c - t.c)) {
+		return false;
+	}
+
+	int dr;
+	int dc;
+
+	if (t.r > f.r) dr = 1;
+	else dr = -1;
+
+	if (t.c > f.c) dc = 1;
+	else dc = -1;
+
+	Position p(f.r + dr, f.c + dc);
+
+	while (p.r != t.r) {
+		if (b.get(p) != nullptr) {
+			return false;
+		}
+
+		p.r += dr;
+		p.c += dc;
+	}
+
+	Piece *q = b.get(t);
+
+	if (q == nullptr || q->getColor() != color) {
+		return true;
+	}
+
+	return false;
+}
 Position parse(string s) {
 	int r = 8 - (s[1] - '0');
 	int c = s[0] - 'a';
@@ -233,4 +276,9 @@ string toNotation(Position p) {
 
 		board.set(Position(0, 1), new Knight(BLACK));
 		board.set(Position(0, 6), new Knight(BLACK));
+		board.set(Position(7, 2), new Bishop(WHITE));
+		board.set(Position(7, 5), new Bishop(WHITE));
+
+		board.set(Position(0, 2), new Bishop(BLACK));
+		board.set(Position(0, 5), new Bishop(BLACK));
 	}
