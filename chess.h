@@ -42,6 +42,14 @@ public:
 };
 
 int absVal(int x);
+class Pawn : public Piece {
+public:
+	Pawn(Color c);
+
+	char symbol();
+
+	bool canMove(Position f, Position t, Board &b);
+};
 
 Position parse(string s);
 string toNotation(Position p);
