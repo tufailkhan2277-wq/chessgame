@@ -127,7 +127,49 @@ bool Pawn::canMove(Position f, Position t, Board &b) {
 
 	return false;
 }
+Rook::Rook(Color c) : Piece(c) {}
 
+char Rook::symbol() {
+	if (color == WHITE) {
+		return 'R';
+	}
+
+	return 'r';
+}
+
+bool Rook::canMove(Position f, Position t, Board &b) {
+	if (f.r != t.r && f.c != t.c) {
+		return false;
+	}
+
+	int dr = 0;
+	int dc = 0;
+
+	if (t.r > f.r) dr = 1;
+	else if (t.r < f.r) dr = -1;
+
+	if (t.c > f.c) dc = 1;
+	else if (t.c < f.c) dc = -1;
+
+	Position p(f.r + dr, f.c + dc);
+
+	while (p.r != t.r || p.c != t.c) {
+		if (b.get(p) != nullptr) {
+			return false;
+		}
+
+		p.r += dr;
+		p.c += dc;
+	}
+
+	Piece *q = b.get(t);
+
+	if (q == nullptr || q->getColor() != color) {
+		return true;
+	}
+
+	return false;
+}
 Position parse(string s) {
 	int r = 8 - (s[1] - '0');
 	int c = s[0] - 'a';
@@ -144,9 +186,15 @@ string toNotation(Position p) {
 	return s;
 }
 
-void setupBoard(Board &board) {
-	for (int i = 0; i < 8; i++) {
-		board.set(Position(6, i), new Pawn(WHITE));
-		board.set(Position(1, i), new Pawn(BLACK));
+
+	void setupBoard(Board &board) {
+		for (int i = 0; i < 8; i++) {
+			board.set(Position(6, i), new Pawn(WHITE));
+			board.set(Position(1, i), new Pawn(BLACK));
+		}
+
+		board.set(Position(7, 0), new Rook(WHITE));
+		board.set(Position(7, 7), new Rook(WHITE));
+		board.set(Position(0, 0), new Rook(BLACK));
+		board.set(Position(0, 7), new Rook(BLACK));
 	}
-}
