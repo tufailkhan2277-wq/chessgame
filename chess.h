@@ -74,7 +74,22 @@ public:
 
 	bool canMove(Position f, Position t, Board &b);
 };
+class Queen : public Piece {
+public:
+	Queen(Color c);
 
+	char symbol();
+
+	bool canMove(Position f, Position t, Board &b);
+};
+class King : public Piece {
+public:
+	King(Color c);
+
+	char symbol();
+
+	bool canMove(Position f, Position t, Board &b);
+};
 Position parse(string s);
 string toNotation(Position p);
 void setupBoard(Board &board);
