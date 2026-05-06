@@ -1,12 +1,10 @@
-#include<iostream>
 #include "chess.h"
 
-int main()
-{
-	chess board;
+int main() {
+	Board board;
 
-	board.initialize();
-	board.display();
-	system("Pause");
+	setupBoard(board);
+	board.draw();
+
 	return 0;
 }
