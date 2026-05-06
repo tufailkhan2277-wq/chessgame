@@ -244,6 +244,57 @@ bool Bishop::canMove(Position f, Position t, Board &b) {
 
 	return false;
 }
+Queen::Queen(Color c) : Piece(c) {}
+
+char Queen::symbol() {
+	if (color == WHITE) {
+		return 'Q';
+	}
+
+	return 'q';
+}
+
+bool Queen::canMove(Position f, Position t, Board &b) {
+
+	Rook r(color);
+	Bishop bp(color);
+
+	if (r.canMove(f, t, b)) {
+		return true;
+	}
+
+	if (bp.canMove(f, t, b)) {
+		return true;
+	}
+
+	return false;
+}
+King::King(Color c) : Piece(c) {}
+
+char King::symbol() {
+	if (color == WHITE) {
+		return 'K';
+	}
+
+	return 'k';
+}
+
+bool King::canMove(Position f, Position t, Board &b) {
+
+	if (absVal(f.r - t.r) <= 1 &&
+		absVal(f.c - t.c) <= 1) {
+
+		Piece *p = b.get(t);
+
+		if (p == nullptr ||
+			p->getColor() != color) {
+
+			return true;
+		}
+	}
+
+	return false;
+}
 Position parse(string s) {
 	int r = 8 - (s[1] - '0');
 	int c = s[0] - 'a';
@@ -281,4 +332,8 @@ string toNotation(Position p) {
 
 		board.set(Position(0, 2), new Bishop(BLACK));
 		board.set(Position(0, 5), new Bishop(BLACK));
+		board.set(Position(7, 3), new Queen(WHITE));
+		board.set(Position(0, 3), new Queen(BLACK));
+		board.set(Position(7, 4), new King(WHITE));
+		board.set(Position(0, 4), new King(BLACK));
 	}
