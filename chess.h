@@ -58,6 +58,14 @@ public:
 
 	bool canMove(Position f, Position t, Board &b);
 };
+class Knight : public Piece {
+public:
+	Knight(Color c);
+
+	char symbol();
+
+	bool canMove(Position f, Position t, Board &b);
+};
 
 Position parse(string s);
 string toNotation(Position p);
