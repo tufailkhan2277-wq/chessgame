@@ -170,6 +170,37 @@ bool Rook::canMove(Position f, Position t, Board &b) {
 
 	return false;
 }
+Knight::Knight(Color c) : Piece(c) {}
+
+char Knight::symbol() {
+	if (color == WHITE) {
+		return 'N';
+	}
+
+	return 'n';
+}
+
+bool Knight::canMove(Position f, Position t, Board &b) {
+
+	int dr = absVal(f.r - t.r);
+	int dc = absVal(f.c - t.c);
+
+	if (!((dr == 2 && dc == 1) ||
+		(dr == 1 && dc == 2))) {
+
+		return false;
+	}
+
+	Piece *p = b.get(t);
+
+	if (p == nullptr ||
+		p->getColor() != color) {
+
+		return true;
+	}
+
+	return false;
+}
 Position parse(string s) {
 	int r = 8 - (s[1] - '0');
 	int c = s[0] - 'a';
@@ -197,4 +228,9 @@ string toNotation(Position p) {
 		board.set(Position(7, 7), new Rook(WHITE));
 		board.set(Position(0, 0), new Rook(BLACK));
 		board.set(Position(0, 7), new Rook(BLACK));
+		board.set(Position(7, 1), new Knight(WHITE));
+		board.set(Position(7, 6), new Knight(WHITE));
+
+		board.set(Position(0, 1), new Knight(BLACK));
+		board.set(Position(0, 6), new Knight(BLACK));
 	}
