@@ -50,6 +50,14 @@ public:
 
 	bool canMove(Position f, Position t, Board &b);
 };
+class Rook : public Piece {
+public:
+	Rook(Color c);
+
+	char symbol();
+
+	bool canMove(Position f, Position t, Board &b);
+};
 
 Position parse(string s);
 string toNotation(Position p);
