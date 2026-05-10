@@ -33,6 +33,7 @@ public:
 };
 int absVal(int x);
 bool isInside(Position p);
+bool isValidNotation(string s);
 class Pawn : public Piece { public: Pawn(Color c); char symbol(); bool canMove(Position, Position, Board &); };
 class Rook : public Piece { public: Rook(Color c); char symbol(); bool canMove(Position, Position, Board &); };
 class Knight : public Piece { public: Knight(Color c); char symbol(); bool canMove(Position, Position, Board &); };
