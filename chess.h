@@ -43,5 +43,7 @@ class Queen : public Piece { public: Queen(Color c); char symbol(); bool canMove
 class King : public Piece { public: King(Color c); char symbol(); bool canMove(Position, Position, Board &); };
 Position parse(string s);
 string toNotation(Position p);
+string colorName(Color c);
+string pieceName(Piece *p);
 void setupBoard(Board &board);
 #endif
