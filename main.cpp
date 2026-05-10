@@ -8,6 +8,31 @@ void printCommands() {
 	cout << "  help      : commands" << endl << endl;
 }
 
+void printLegalMoves(Board &board, Position f) {
+	Piece *p = board.get(f);
+
+	cout << "Legal moves for " << p->symbol() << " at " << toNotation(f) << ": ";
+
+	bool found = false;
+
+	for (int r = 0; r < 8; r++) {
+		for (int c = 0; c < 8; c++) {
+			Position t(r, c);
+
+			if (p->canMove(f, t, board)) {
+				cout << toNotation(t) << " ";
+				found = true;
+			}
+		}
+	}
+
+	if (!found) {
+		cout << "(none)";
+	}
+
+	cout << endl;
+}
+
 void printTurn(Color turn) {
 	if (turn == WHITE) {
 		cout << "White move: ";
@@ -39,6 +64,22 @@ int main() {
 
 		if (a == "quit") {
 			break;
+		}
+
+		if (a == "help") {
+			printCommands();
+			continue;
+		}
+
+		if (a == "moves") {
+			cin >> b;
+			Position f = parse(b);
+			Piece *p = board.get(f);
+
+			if (p != nullptr) {
+				printLegalMoves(board, f);
+			}
+			continue;
 		}
 
 		cin >> b;
