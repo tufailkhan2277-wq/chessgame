@@ -51,20 +51,34 @@ void Board::move(Position f, Position t) {
 }
 
 void Board::draw() {
-	cout << endl << "  a b c d e f g h" << endl;
+	cout << endl;
+
+	cout << "\t";
+	for (char col = 'a'; col <= 'h'; col++) {
+		cout << col << "\t";
+	}
+	cout << endl << endl;
+
 	for (int r = 0; r < 8; r++) {
-		cout << 8 - r << " ";
+		cout << 8 - r << "\t";
+
 		for (int c = 0; c < 8; c++) {
 			if (grid[r][c] != nullptr) {
-				cout << grid[r][c]->symbol() << " ";
+				cout << grid[r][c]->symbol() << "\t";
 			}
 			else {
-				cout << ". ";
+				cout << ".\t";
 			}
 		}
-		cout << 8 - r << endl;
+
+		cout << 8 - r << endl << endl;
 	}
-	cout << "  a b c d e f g h" << endl;
+
+	cout << "\t";
+	for (char col = 'a'; col <= 'h'; col++) {
+		cout << col << "\t";
+	}
+	cout << endl;
 }
 
 int absVal(int x) {
@@ -83,13 +97,12 @@ bool isInside(Position p) {
 
 Pawn::Pawn(Color c) : Piece(c) {}
 char Pawn::symbol() {
-	return (color == WHITE) ? 'P' : 'p';
+	if (color == WHITE) return 'P';
+	return 'p';
 }
 bool Pawn::canMove(Position f, Position t, Board &b) {
 	int d = (color == WHITE) ? -1 : 1;
-	if (f.c == t.c && b.get(t) == nullptr && t.r == f.r + d) {
-		return true;
-	}
+	if (f.c == t.c && b.get(t) == nullptr && t.r == f.r + d) return true;
 	if (f.c == t.c && b.get(t) == nullptr) {
 		if (color == WHITE) {
 			if (f.r == 6 && t.r == 4 && b.get(Position(5, f.c)) == nullptr) return true;
@@ -107,17 +120,18 @@ bool Pawn::canMove(Position f, Position t, Board &b) {
 
 Rook::Rook(Color c) : Piece(c) {}
 char Rook::symbol() {
-	return (color == WHITE) ? 'R' : 'r';
+	if (color == WHITE) return 'R';
+	return 'r';
 }
 bool Rook::canMove(Position f, Position t, Board &b) {
 	if (f.r != t.r && f.c != t.c) return false;
-	int dr = (t.r > f.r) ? 1 : (t.r < f.r ? -1 : 0);
-	int dc = (t.c > f.c) ? 1 : (t.c < f.c ? -1 : 0);
+	int dr = 0, dc = 0;
+	if (t.r > f.r) dr = 1; else if (t.r < f.r) dr = -1;
+	if (t.c > f.c) dc = 1; else if (t.c < f.c) dc = -1;
 	Position p(f.r + dr, f.c + dc);
 	while (p.r != t.r || p.c != t.c) {
 		if (b.get(p) != nullptr) return false;
-		p.r += dr;
-		p.c += dc;
+		p.r += dr; p.c += dc;
 	}
 	Piece *q = b.get(t);
 	return (q == nullptr || q->getColor() != color);
@@ -125,7 +139,8 @@ bool Rook::canMove(Position f, Position t, Board &b) {
 
 Knight::Knight(Color c) : Piece(c) {}
 char Knight::symbol() {
-	return (color == WHITE) ? 'N' : 'n';
+	if (color == WHITE) return 'N';
+	return 'n';
 }
 bool Knight::canMove(Position f, Position t, Board &b) {
 	int dr = absVal(f.r - t.r);
@@ -137,7 +152,8 @@ bool Knight::canMove(Position f, Position t, Board &b) {
 
 Bishop::Bishop(Color c) : Piece(c) {}
 char Bishop::symbol() {
-	return (color == WHITE) ? 'B' : 'b';
+	if (color == WHITE) return 'B';
+	return 'b';
 }
 bool Bishop::canMove(Position f, Position t, Board &b) {
 	if (absVal(f.r - t.r) != absVal(f.c - t.c)) return false;
@@ -146,8 +162,7 @@ bool Bishop::canMove(Position f, Position t, Board &b) {
 	Position p(f.r + dr, f.c + dc);
 	while (p.r != t.r) {
 		if (b.get(p) != nullptr) return false;
-		p.r += dr;
-		p.c += dc;
+		p.r += dr; p.c += dc;
 	}
 	Piece *q = b.get(t);
 	return (q == nullptr || q->getColor() != color);
@@ -155,7 +170,8 @@ bool Bishop::canMove(Position f, Position t, Board &b) {
 
 Queen::Queen(Color c) : Piece(c) {}
 char Queen::symbol() {
-	return (color == WHITE) ? 'Q' : 'q';
+	if (color == WHITE) return 'Q';
+	return 'q';
 }
 bool Queen::canMove(Position f, Position t, Board &b) {
 	Rook r(color);
@@ -165,7 +181,8 @@ bool Queen::canMove(Position f, Position t, Board &b) {
 
 King::King(Color c) : Piece(c) {}
 char King::symbol() {
-	return (color == WHITE) ? 'K' : 'k';
+	if (color == WHITE) return 'K';
+	return 'k';
 }
 bool King::canMove(Position f, Position t, Board &b) {
 	if (absVal(f.r - t.r) <= 1 && absVal(f.c - t.c) <= 1) {
