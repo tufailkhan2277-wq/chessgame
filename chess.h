@@ -24,6 +24,7 @@ public:
 	Piece *grid[8][8];
 	Board();
 	~Board();
+	void clear();
 	Piece *get(Position p);
 	bool isEmpty(Position p);
 	bool isEnemy(Position p, Color c);
