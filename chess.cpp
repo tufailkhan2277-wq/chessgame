@@ -4,8 +4,15 @@ Piece::Piece(Color c) { color = c; }
 Piece::~Piece() {}
 Color Piece::getColor() { return color; }
 Board::Board() { for (int r = 0; r < 8; r++) for (int c = 0; c < 8; c++) grid[r][c] = nullptr; }
-Board::~Board() { for (int r = 0; r < 8; r++) for (int c = 0; c < 8; c++) delete grid[r][c]; }
-Piece *Board::get(Position p) { if (!isInside(p)) return nullptr; return grid[p.r][p.c]; }
+Board::~Board() { clear(); }
+void Board::clear() {
+	for (int r = 0; r < 8; r++) {
+		for (int c = 0; c < 8; c++) {
+			delete grid[r][c];
+			grid[r][c] = nullptr;
+		}
+	}
+}Piece *Board::get(Position p) { if (!isInside(p)) return nullptr; return grid[p.r][p.c]; }
 bool Board::isEmpty(Position p) { return get(p) == nullptr; }
 bool Board::isEnemy(Position p, Color c) {
 	Piece *pc = get(p);
