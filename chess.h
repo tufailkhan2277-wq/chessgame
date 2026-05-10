@@ -26,6 +26,7 @@ public:
 	~Board();
 	Piece *get(Position p);
 	bool isEmpty(Position p);
+	bool isEnemy(Position p, Color c);
 	void set(Position p, Piece *pc);
 	void move(Position f, Position t);
 	void draw();
