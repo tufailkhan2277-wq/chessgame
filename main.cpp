@@ -1,5 +1,13 @@
 #include "chess.h"
 
+void printTurn(Color turn) {
+	if (turn == WHITE) {
+		cout << "White move: ";
+	}
+	else {
+		cout << "Black move: ";
+	}
+}
 int main() {
 
 	Board board;
@@ -14,13 +22,8 @@ int main() {
 
 		board.draw();
 
-		if (turn == WHITE) {
-			cout << "\nWhite move: ";
-		}
-		else {
-			cout << "\nBlack move: ";
-		}
-
+		printTurn(turn);
+		
 		cin >> a;
 
 		if (a == "quit") {
