@@ -42,54 +42,50 @@ public:
 };
 
 int absVal(int x);
+bool isInside(Position p);
+
 class Pawn : public Piece {
 public:
 	Pawn(Color c);
-
 	char symbol();
-
 	bool canMove(Position f, Position t, Board &b);
 };
+
 class Rook : public Piece {
 public:
 	Rook(Color c);
-
 	char symbol();
-
 	bool canMove(Position f, Position t, Board &b);
 };
+
 class Knight : public Piece {
 public:
 	Knight(Color c);
-
 	char symbol();
-
 	bool canMove(Position f, Position t, Board &b);
 };
+
 class Bishop : public Piece {
 public:
 	Bishop(Color c);
-
 	char symbol();
-
 	bool canMove(Position f, Position t, Board &b);
 };
+
 class Queen : public Piece {
 public:
 	Queen(Color c);
-
 	char symbol();
-
 	bool canMove(Position f, Position t, Board &b);
 };
+
 class King : public Piece {
 public:
 	King(Color c);
-
 	char symbol();
-
 	bool canMove(Position f, Position t, Board &b);
 };
+
 Position parse(string s);
 string toNotation(Position p);
 void setupBoard(Board &board);
