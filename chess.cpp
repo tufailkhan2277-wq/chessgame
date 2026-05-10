@@ -1,4 +1,3 @@
-
 #include "chess.h"
 
 Position::Position(int r, int c) {
@@ -42,6 +41,16 @@ Piece *Board::get(Position p) {
 
 bool Board::isEmpty(Position p) {
     return get(p) == nullptr;
+}
+
+bool Board::isEnemy(Position p, Color c) {
+    Piece *pc = get(p);
+
+    if (pc != nullptr && pc->getColor() != c) {
+        return true;
+    }
+
+    return false;
 }
 
 void Board::set(Position p, Piece *pc) {
@@ -127,9 +136,7 @@ bool Pawn::canMove(Position f, Position t, Board &b) {
     }
 
     if (absVal(f.c - t.c) == 1 && t.r == f.r + d) {
-        Piece *p = b.get(t);
-
-        if (p != nullptr && p->getColor() != color) {
+        if (b.isEnemy(t, color)) {
             return true;
         }
     }
@@ -154,7 +161,7 @@ bool Rook::canMove(Position f, Position t, Board &b) {
     Position p(f.r + dr, f.c + dc);
 
     while (p.r != t.r || p.c != t.c) {
-        if (b.get(p) != nullptr) {
+        if (!b.isEmpty(p)) {
             return false;
         }
 
@@ -162,9 +169,7 @@ bool Rook::canMove(Position f, Position t, Board &b) {
         p.c += dc;
     }
 
-    Piece *q = b.get(t);
-
-    return (q == nullptr || q->getColor() != color);
+    return (b.isEmpty(t) || b.isEnemy(t, color));
 }
 
 Knight::Knight(Color c) : Piece(c) {}
@@ -181,9 +186,11 @@ bool Knight::canMove(Position f, Position t, Board &b) {
         return false;
     }
 
-    Piece *p = b.get(t);
+    if (b.isEmpty(t) || b.isEnemy(t, color)) {
+        return true;
+    }
 
-    return (p == nullptr || p->getColor() != color);
+    return false;
 }
 
 Bishop::Bishop(Color c) : Piece(c) {}
@@ -203,7 +210,7 @@ bool Bishop::canMove(Position f, Position t, Board &b) {
     Position p(f.r + dr, f.c + dc);
 
     while (p.r != t.r) {
-        if (b.get(p) != nullptr) {
+        if (!b.isEmpty(p)) {
             return false;
         }
 
@@ -211,9 +218,7 @@ bool Bishop::canMove(Position f, Position t, Board &b) {
         p.c += dc;
     }
 
-    Piece *q = b.get(t);
-
-    return (q == nullptr || q->getColor() != color);
+    return (b.isEmpty(t) || b.isEnemy(t, color));
 }
 
 Queen::Queen(Color c) : Piece(c) {}
@@ -237,9 +242,9 @@ char King::symbol() {
 
 bool King::canMove(Position f, Position t, Board &b) {
     if (absVal(f.r - t.r) <= 1 && absVal(f.c - t.c) <= 1) {
-        Piece *p = b.get(t);
-
-        return (p == nullptr || p->getColor() != color);
+        if (b.isEmpty(t) || b.isEnemy(t, color)) {
+            return true;
+        }
     }
 
     return false;
@@ -288,4 +293,3 @@ void setupBoard(Board &board) {
     board.set(Position(7, 4), new King(WHITE));
     board.set(Position(0, 4), new King(BLACK));
 }
-
