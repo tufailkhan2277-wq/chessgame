@@ -1,5 +1,13 @@
 #include "chess.h"
 
+void printCommands() {
+	cout << endl << "Commands:" << endl;
+	cout << "  e2 e4     : move" << endl;
+	cout << "  moves e2  : show moves" << endl;
+	cout << "  quit      : exit" << endl;
+	cout << "  help      : commands" << endl << endl;
+}
+
 void printTurn(Color turn) {
 	if (turn == WHITE) {
 		cout << "White move: ";
@@ -8,6 +16,7 @@ void printTurn(Color turn) {
 		cout << "Black move: ";
 	}
 }
+
 int main() {
 
 	Board board;
@@ -21,6 +30,8 @@ int main() {
 	while (true) {
 
 		board.draw();
+
+		printCommands();
 
 		printTurn(turn);
 		
